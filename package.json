@@ -1,0 +1,43 @@
+{
+  "name": "datocms-plugin-shopify-instance-selector",
+  "description": "Allows the user to select a Shopify instance (Product, ProductVariant, Market) and store the ID of that instance in a Single Line Text Field.",
+  "homepage": "https://github.com/robwatkiss/datocms-plugin-shopify-instance-selector",
+  "private": false,
+  "version": "0.1.0",
+  "author": "Rob Watkiss <rob@robwatkiss.com>",
+  "type": "module",
+  "keywords": [
+    "datocms-plugin"
+  ],
+  "datoCmsPlugin": {
+    "title": "Shopify Instance Selector",
+    "coverImage": "docs/cover-1200x800.png",
+    "previewImage": "docs/preview.mp4",
+    "entryPoint": "dist/index.html",
+    "permissions": []
+  },
+  "files": [
+    "dist",
+    "docs"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "datocms-plugin-sdk": "^2.0.9",
+    "datocms-react-ui": "^2.0.9",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "globals": "^15.9.0",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.1"
+  }
+}
