@@ -19,15 +19,12 @@ export default function ConfigScreen({ ctx }: PropTypes) {
       <FormHandler<Parameters>
         initialValues={ctx.plugin.attributes.parameters}
         validate={(values) => {
-          console.log(values)
           const errors: Record<string, string> = {};
 
           if (!values.shopifyStorefrontAccessToken) {
             errors.shopifyStorefrontAccessToken = 'This field is required';
-          } else {
-            if (values.shopifyStorefrontAccessToken?.startsWith('shpat_')) {
-              errors.shopifyStorefrontAccessToken = 'You have entered an Admin API key. Please enter a Storefront API key.';
-            }
+          } else if (values.shopifyStorefrontAccessToken?.startsWith('shpat_')) {
+            errors.shopifyStorefrontAccessToken = 'You have entered an Admin API key. Please enter a Storefront API key.';
           }
 
           if (!values.shopifyStorefrontUrl) {
@@ -51,7 +48,7 @@ export default function ConfigScreen({ ctx }: PropTypes) {
               <Field name="shopifyStorefrontUrl">
                 {({ input, meta: { error } }) => (
                   <TextField
-                    id="storefrontUrl"
+                    id="shopifyStorefrontUrl"
                     label="Storefront URL"
                     placeholder='https://your-store.myshopify.com'
                     hint='Enter your full Shopify store URL'
@@ -65,7 +62,7 @@ export default function ConfigScreen({ ctx }: PropTypes) {
               <Field name="shopifyStorefrontAccessToken">
                 {({ input, meta: { error } }) => (
                   <TextField
-                    id="storefrontAccess Token"
+                    id="shopifyStorefrontAccessToken"
                     label="Storefront Access Token"
                     required
                     error={error}

@@ -1,25 +1,26 @@
 import { produce } from 'immer';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import ShopifyClient, { Product } from './ShopifyClient';
+import ShopifyClient from './ShopifyClient/ShopifyClient';
+import type { Product } from './ShopifyClient';
 
 export type Status = 'loading' | 'success' | 'error';
 
 export type State = {
   query: string;
   searches: Record<string, { result: string[] | null; status: Status }>;
-  products: Record<string, { result: Product | null; status: Status }>;
-  getProduct(handle: string): {
+  entities: Record<string, { result: Product | null; status: Status }>;
+  getEntity (handle: string): {
     status: Status;
-    product: Product | null;
+    entity: Product | null;
   };
   getCurrentSearch(): {
     query: string;
     status: Status;
-    products: Product[] | null;
+    entities: Product[] | null;
   };
-  fetchProductByHandle(client: ShopifyClient, handle: string): Promise<void>;
-  fetchProductsMatching(client: ShopifyClient, query: string): Promise<void>;
+  fetchEntityByHandle(client: ShopifyClient, type: string, handle: string): Promise<void>;
+  fetchEntitiesMatching(client: ShopifyClient, type: string, query: string): Promise<void>;
 };
 
 const useStore = create(
@@ -31,80 +32,83 @@ const useStore = create(
 
       return {
         query: '',
-        products: {},
+        entities: {},
         searches: {},
-        getProduct(handle: string) {
-          const selectedProduct = (get() as State).products[handle];
+        getEntity(id: string) {
+          const selectedEntity = (get() as State).entities[id];
 
           return {
-            status: selectedProduct?.status
-              ? selectedProduct.status
-              : 'loading',
-            product: selectedProduct?.result,
+            status: selectedEntity?.status ? selectedEntity.status : 'loading',
+            entity: selectedEntity?.result,
           };
         },
-        getCurrentSearch() {
+        getCurrentSearch(type: string) {
           const state = get() as State;
         
-          const search = state.searches[state.query] || {
+          const search = state.searches[`${type}:${state.query}`] || {
             status: 'loading',
             result: [],
           };
-        
-          const products =
+
+          console.log(search)
+
+          const entities =
             search.result &&
-            search.result.map((id: string) => state.products[id]?.result || undefined);
-        
+            search.result.map((id: string) => state.entities[id]?.result || undefined);
+
           return {
             query: state.query,
             status: search.status,
-            products: products || null,
+            entities: entities || null
           };
         },
-        async fetchProductByHandle(client: ShopifyClient, handle: string) {
-          set((state) => {
-            state.products[handle] = state.products[handle] || { result: null };
-            state.products[handle].status = 'loading';
-          });
+        async fetchEntityByHandle(client: ShopifyClient, type: string, handle: string) {
+          console.log('fetchEntityByHandle', type, handle);
+          // set((state) => {
+          //   const key = `${type}:${handle}`;
+          //   state.entities[key] = state.entities[key] || { result: null };
+          //   state.entities[key].status = 'loading';
+          // });
 
-          try {
-            const product = await client.productByHandle(handle);
-
-            set((state) => {
-              state.products[handle].result = product;
-              state.products[handle].status = 'success';
-            });
-          } catch (e) {
-            set((state) => {
-              state.products[handle].result = null;
-              state.products[handle].status = 'error';
-            });
-          }
+          // try {
+          //   const item = await client.fetchByHandle(type, handle);
+          //   set((state) => {
+          //     const key = `${type}:${handle}`;
+          //     state.entities[key].result = item;
+          //     state.entities[key].status = 'success';
+          //   });
+          // } catch {
+          //   set((state) => {
+          //     const key = `${type}:${handle}`;
+          //     state.entities[key].result = null;
+          //     state.entities[key].status = 'error';
+          //   });
+          // }
         },
-        async fetchProductsMatching(client: ShopifyClient, query: string) {
+        async fetchEntitiesMatching(client: ShopifyClient, type: string, query: string) {
           set((state) => {
-            state.searches[query] = state.searches[query] || { result: [] };
-            state.searches[query].status = 'loading';
+            const key = `${type}:${query}`;
+            state.searches[key] = state.searches[key] || { result: [] };
+            state.searches[key].status = 'loading';
             state.query = query;
           });
 
           try {
-            const products = await client.productsMatching(query);
-
+            const items = await client.fetchMatching(query);
             set((state) => {
-              state.searches[query].status = 'success';
-              state.searches[query].result = products.map((p) => p.handle);
-
-              products.forEach((product) => {
-                state.products[product.handle] =
-                  state.products[product.handle] || {};
-                state.products[product.handle].result = product;
+              const key = `${type}:${query}`;
+              state.searches[key].status = 'success';
+              state.searches[key].result = items.map((i) => i.id);
+              items.forEach((item) => {
+                state.entities[item.id] = state.entities[item.id] || {};
+                state.entities[item.id].result = item;
               });
             });
-          } catch (e) {
+          } catch {
             set((state) => {
-              state.searches[query].status = 'error';
-              state.searches[query].result = null;
+              const key = `${type}:${query}`;
+              state.searches[key].status = 'error';
+              state.searches[key].result = null;
             });
           }
         },

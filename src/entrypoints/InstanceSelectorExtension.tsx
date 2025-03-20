@@ -20,7 +20,10 @@ export default function InstanceSelectorExtension ({ ctx }: PropTypes) {
   
     return (
       <Canvas ctx={ctx}>
-        <Empty onSelect={(product) => console.log(product)} />
+        <Empty
+          instanceType={shopifyInstanceTypeKey}
+          onSelect={(item) => console.log(item)}
+        />
       </Canvas>
     );
-}  
+}

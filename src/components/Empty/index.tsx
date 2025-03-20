@@ -17,6 +17,9 @@ export default function Empty({ onSelect }: EmptyProps) {
       id: 'browse',
       title: 'Browse Shopify',
       width: 'xl',
+      parameters: {
+        shopifyInstanceType: ctx.field.attributes.appearance.parameters.shopifyInstanceType
+      },
     })) as Product | null;
 
     if (product) {
