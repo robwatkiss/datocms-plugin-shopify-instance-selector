@@ -1,7 +1,7 @@
 import { connect } from "datocms-plugin-sdk";
 import "datocms-react-ui/styles.css";
 import ConfigScreen from "./entrypoints/ConfigScreen";
-import SidebarLinks from "./entrypoints/SidebarLinks";
+// import SidebarLinks from "./entrypoints/SidebarLinks";
 import InstanceSelectorExtension from "./entrypoints/InstanceSelectorExtension";
 import InstanceSelectorConfigScreen from "./entrypoints/InstanceSelectorConfigScreen";
 import BrowseModal from "./components/BrowseModal";
@@ -11,17 +11,17 @@ connect({
 	renderConfigScreen(ctx) {
 		return render(<ConfigScreen ctx={ctx} />);
 	},
-	itemFormSidebarPanels () {
-		return [{
-			id: 'sidebar-links',
-			label: 'Shopify Links',
-			icon: 'link',
-			position: 'bottom',
-		}]
-	},
-	renderItemFormSidebarPanel(_sidebarPaneId, ctx) {
-		render(<SidebarLinks ctx={ctx} />);
-	},
+	// itemFormSidebarPanels () {
+	// 	return [{
+	// 		id: 'sidebar-links',
+	// 		label: 'Shopify Links',
+	// 		icon: 'link',
+	// 		position: 'bottom',
+	// 	}]
+	// },
+	// renderItemFormSidebarPanel(_sidebarPaneId, ctx) {
+	// 	render(<SidebarLinks ctx={ctx} />);
+	// },
 	manualFieldExtensions(_ctx) {
 		return [
 		  {

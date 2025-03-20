@@ -4,8 +4,7 @@ import {
   Button,
   TextInput,
   Canvas,
-  Spinner,
-  ContextInspector,
+  Spinner
 } from "datocms-react-ui";
 import s from "./styles.module.css";
 import getShopifyClient, { ShopifyEntity } from "../../utils/ShopifyClient";
@@ -64,8 +63,6 @@ export default function BrowseModal({ ctx }: { ctx: RenderModalCtx }) {
 
   return (
     <Canvas ctx={ctx}>
-      <ContextInspector />
-
       <div className={s["browse"]}>
         <form className={s["search"]} onSubmit={handleSubmit}>
           <TextInput
