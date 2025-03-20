@@ -28,7 +28,7 @@ connect({
 			id: 'instance-selector',
 			name: 'Shopify Instance Selector',
 			type: 'editor',
-			fieldTypes: ['string'],
+			fieldTypes: ['json'],
 			configurable: true
 		  },
 		];

@@ -12,11 +12,7 @@ export default class ShopifyClient {
     this.shopifyStorefrontUrl = shopifyStorefrontUrl;
   }
 
-  async fetchByHandle(_query: string): Promise<any> {
-    throw new Error('Not implemented');
-  }
-
-  async fetchMatching(_id: string): Promise<any> {
+  async fetchMatching(_query: string): Promise<any> {
     throw new Error('Not implemented');
   }
 

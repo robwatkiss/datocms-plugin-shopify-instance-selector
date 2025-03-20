@@ -1,6 +1,7 @@
 import ShopifyClient from './ShopifyClient';
 
 export type Product = {
+  __typename: 'product';
   id: string;
   handle: string;
   title: string;
@@ -39,6 +40,7 @@ const normalizeProduct = (product: any): Product => {
   }
 
   return {
+    __typename: 'product',
     ...product,
     imageUrl: product.images.edges[0]?.node.src || '',
   };
@@ -52,7 +54,7 @@ export default class ShopifyProductsClient extends ShopifyClient {
     const response = await this.fetch({
       query: `
         query getProducts($query: String) {
-            products(first: 10, query: $query) {
+            products(first: 100, query: $query) {
               edges {
                 node {
                   ${productFragment}
@@ -64,20 +66,5 @@ export default class ShopifyProductsClient extends ShopifyClient {
       variables: { query: query || null },
     });
     return normalizeProducts(response.products);
-  }
-  
-  async fetchByHandle (id: string) {
-    const response = await this.fetch({
-      query: `
-        query getProduct($id: ID!) {
-          product (id: $id) {
-            ${productFragment}
-          }
-        }
-      `,
-      variables: { id },
-    });
-  
-    return normalizeProduct(response.product);
   }
 }

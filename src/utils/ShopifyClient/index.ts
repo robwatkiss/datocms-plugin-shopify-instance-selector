@@ -2,7 +2,10 @@ import { ValidParameters } from "../../types";
 import ShopifyProductsClient from "./ShopifyProductsClient"
 import ShopifyProductVariantsClient from "./ShopifyProductVariantsClient";
 
-export type { Product } from './ShopifyProductsClient';
+import type { Product } from './ShopifyProductsClient';
+import type { ProductVariant } from './ShopifyProductVariantsClient';
+
+export type ShopifyEntity = Product | ProductVariant;
 
 interface GetClientArgs {
   type: string;
