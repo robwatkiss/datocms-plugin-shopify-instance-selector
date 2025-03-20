@@ -1,4 +1,7 @@
-export type FirstInstallationParameters = {};
+export type FirstInstallationParameters = {
+  shopifyStorefrontAccessToken: string;
+  shopifyStorefrontUrl: string;
+};
 
 export type ValidParameters = {
   shopifyStorefrontAccessToken: string;

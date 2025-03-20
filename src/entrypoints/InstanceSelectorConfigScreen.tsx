@@ -32,8 +32,10 @@ export default function InstanceSelectorConfigScreen ({ ctx }: PropTypes) {
           hint="Select the type of instance you want to display"
           required
           value={formValues.shopifyInstanceType}
+          // @ts-ignore
           onChange={update.bind(null, 'shopifyInstanceType')}
           selectInputProps={{
+            // @ts-ignore
             options: ShopifyInstanceTypes.map((type) => ({
               value: type.value,
               label: type.label
