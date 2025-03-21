@@ -50,9 +50,11 @@ const normalizeProductVariant = (productVariant: any, productId: string): Produc
 };
 
 const normalizeProductVariants = (products: any): Product[] =>
-  products.edges.flatMap((edge: any) => edge.node.variants.edges).map(
-    (edge: any) => normalizeProductVariant(edge.node, edge.node.id)
-  );
+  products.edges.flatMap(
+    (product: any) => product.node.variants.edges.map(
+      (variant: any) => normalizeProductVariant(variant.node, product.node.id)
+    )
+  )
 
 export default class ShopifyProductVariantsClient extends ShopifyClient {
   async fetchMatching(query: string) {
